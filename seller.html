@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OponaDoPary — Panel sprzedawcy</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="./supabaseClient.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span> OponaDoPary</div>
+    <nav class="nav">
+      <a href="./index.html">Wyszukiwarka par</a>
+      <a href="./seller.html" class="active">Panel sprzedawcy</a>
+      <button id="btn-login" class="btn small">Zaloguj</button>
+      <button id="btn-logout" class="btn small ghost hidden">Wyloguj</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>Dodaj ogłoszenie o oponie</h1>
+      <p class="muted">Maksymalnie 5 zdjęć. Zostaną przeskalowane do szerokości 800px po stronie przeglądarki.</p>
+      <form id="add-form" class="grid">
+        <div class="field">
+          <label>Producent *</label>
+          <select id="add-brand" required></select>
+        </div>
+        <div class="field">
+          <label>Model *</label>
+          <select id="add-model" required></select>
+        </div>
+        <div class="field">
+          <label>Rozmiar *</label>
+          <select id="add-size" required></select>
+        </div>
+        <div class="field">
+          <label>Indeks nośności *</label>
+          <select id="add-load" required></select>
+        </div>
+        <div class="field">
+          <label>Indeks prędkości *</label>
+          <select id="add-speed" required></select>
+        </div>
+        <div class="field">
+          <label>Rok produkcji *</label>
+          <input id="add-year" type="number" min="2000" step="1" required />
+        </div>
+        <div class="field">
+          <label>Bieżnik (mm) *</label>
+          <input id="add-tread" type="number" min="0" max="20" step="0.5" required />
+        </div>
+        <div class="field">
+          <label>Cena (PLN) *</label>
+          <input id="add-price" type="number" min="0" step="1" required />
+        </div>
+        <div class="field span-2">
+          <label>Zdjęcia (max 5)</label>
+          <input id="add-photos" type="file" accept="image/*" multiple />
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn">Dodaj ogłoszenie</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Moje ogłoszenia</h2>
+      <div id="my-listings" class="listings"></div>
+    </section>
+  </main>
+
+  <script src="./seller.js"></script>
+  <script src="./auth.js"></script>
+</body>
+</html>

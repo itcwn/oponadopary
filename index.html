@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OponaDoPary — Wyszukiwarka par</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- Supabase JS via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="./supabaseClient.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span> OponaDoPary</div>
+    <nav class="nav">
+      <a href="./index.html">Wyszukiwarka par</a>
+      <a href="./seller.html">Panel sprzedawcy</a>
+      <button id="btn-login" class="btn small">Zaloguj</button>
+      <button id="btn-logout" class="btn small ghost hidden">Wyloguj</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>Znajdź drugą oponę do pary</h1>
+      <p class="muted">Marka i model są twardymi warunkami. Rok i bieżnik — w tolerancji.</p>
+
+      <form id="search-form" class="grid">
+        <div class="field">
+          <label>Producent (marka) *</label>
+          <select id="brand-select" required></select>
+        </div>
+        <div class="field">
+          <label>Model *</label>
+          <select id="model-select" required></select>
+        </div>
+        <div class="field">
+          <label>Rozmiar *</label>
+          <select id="size-select" required></select>
+        </div>
+        <div class="field">
+          <label>Indeks nośności *</label>
+          <select id="load-select" required></select>
+        </div>
+        <div class="field">
+          <label>Indeks prędkości *</label>
+          <select id="speed-select" required></select>
+        </div>
+        <div class="field">
+          <label>Rok produkcji</label>
+          <input id="year-input" type="number" min="2000" step="1" placeholder="2019" />
+        </div>
+        <div class="field">
+          <label>Bieżnik (mm)</label>
+          <input id="tread-input" type="number" min="0" max="20" step="0.5" placeholder="6.5" />
+        </div>
+        <div class="field">
+          <label>Tolerancja roku (≤)</label>
+          <input id="tol-year" type="number" min="0" max="5" step="1" value="2" />
+        </div>
+        <div class="field">
+          <label>Tolerancja bieżnika (≤)</label>
+          <input id="tol-tread" type="number" min="0" max="3" step="0.5" value="1.5" />
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn">Szukaj par</button>
+          <button type="button" id="btn-clear" class="btn ghost">Wyczyść</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card" id="results-card">
+      <div class="row-between">
+        <div>
+          <strong id="results-count">Znaleziono 0 par</strong>
+          <div class="muted" id="results-criteria"></div>
+        </div>
+        <div>
+          <label class="muted">Sortowanie:</label>
+          <select id="sort-select">
+            <option value="best">Najlepsze dopasowanie</option>
+            <option value="price">Najniższa cena</option>
+            <option value="newest">Najnowsze</option>
+          </select>
+        </div>
+      </div>
+      <div id="results" class="pairs"></div>
+      <div id="empty" class="empty hidden">
+        Brak dopasowanych par. Spróbuj zwiększyć tolerancję roku lub bieżnika.
+      </div>
+    </section>
+  </main>
+
+  <script src="./search.js"></script>
+  <script src="./auth.js"></script>
+</body>
+</html>
