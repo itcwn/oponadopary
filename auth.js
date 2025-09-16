@@ -5,11 +5,11 @@ const btnLogout = document.getElementById('btn-logout');
 async function refreshAuthButtons() {
   const { data: { user } } = await sb.auth.getUser();
   if (user) {
-    btnLogin.classList.add('hidden');
-    btnLogout.classList.remove('hidden');
+    btnLogin?.classList.add('hidden');
+    btnLogout?.classList.remove('hidden');
   } else {
-    btnLogin.classList.remove('hidden');
-    btnLogout.classList.add('hidden');
+    btnLogin?.classList.remove('hidden');
+    btnLogout?.classList.add('hidden');
   }
 }
 

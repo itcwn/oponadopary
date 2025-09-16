@@ -53,7 +53,8 @@ async function loadIndices(modelId, sizeId) {
   const { data: loads, error: e1 } = await sb.rpc('get_load_indices_for_model_size', { p_model_id: Number(modelId), p_size_id: Number(sizeId) });
   const { data: speeds, error: e2 } = await sb.rpc('get_speed_indices_for_model_size', { p_model_id: Number(modelId), p_size_id: Number(sizeId) });
   if (e1 || e2) { console.error(e1||e2); return; }
-  loadSel.appendChild(option('', 'Wybierz...')); speedsel = speedSel; speedSel.appendChild(option('', 'Wybierz...'));
+  loadSel.appendChild(option('', 'Wybierz...'));
+  speedSel.appendChild(option('', 'Wybierz...'));
   loads.forEach(li => loadSel.appendChild(option(li.id, li.value)));
   speeds.forEach(si => speedSel.appendChild(option(si.id, si.code)));
 }
@@ -66,8 +67,8 @@ async function searchPairs(e){
   e.preventDefault();
   const brand_id = Number(brandSel.value);
   const model_id = Number(modelSel.value);
-  const size_id = Number(sizeSel.value);
-  const load_id = Number(loadSel.value);
+  const size_id  = Number(sizeSel.value);
+  const load_id  = Number(loadSel.value);
   const speed_id = Number(speedSel.value);
   if(!brand_id||!model_id||!size_id||!load_id||!speed_id){
     alert('Uzupełnij wszystkie obowiązkowe pola.'); return;
@@ -77,7 +78,6 @@ async function searchPairs(e){
   const tol_year = Number(tolYear.value||0);
   const tol_tread = Number(tolTread.value||0);
 
-  // RPC pair search (server-side)
   const { data, error } = await sb.rpc('search_pairs', {
     p_brand_id: brand_id,
     p_model_id: model_id,
@@ -95,7 +95,6 @@ async function searchPairs(e){
 }
 
 function fmtPrice(cents){ return new Intl.NumberFormat('pl-PL',{style:'currency',currency:'PLN'}).format((cents||0)/100); }
-
 function badge(text, cls=''){ return `<span class="badge ${cls}">${text}</span>`; }
 
 function renderResults(items, crit){
@@ -106,11 +105,10 @@ function renderResults(items, crit){
   if(!items.length){ emptyEl.classList.remove('hidden'); return; }
   emptyEl.classList.add('hidden');
 
-  items.forEach((p, i) => {
-    const tyreA = p.tire_1;
-    const tyreB = p.tire_2;
-    const diffYear = Math.abs((tyreA.year||0)-(tyreB.year||0));
-    const diffTread = Math.abs((tyreA.tread_mm||0)-(tyreB.tread_mm||0));
+  items.forEach((p) => {
+    const a = p.tire_1, b = p.tire_2;
+    const diffYear = Math.abs((a.year||0)-(b.year||0));
+    const diffTread = Math.abs((a.tread_mm||0)-(b.tread_mm||0));
     const clsYear = diffYear <= (crit.tol_year||0) ? 'ok':'warn';
     const clsTread = diffTread <= (crit.tol_tread||0) ? 'ok':'warn';
     const html = `
@@ -119,23 +117,23 @@ function renderResults(items, crit){
         <div class="tire">
           <div class="thumb"></div>
           <div>
-            <div><strong>${tyreA.brand} ${tyreA.model}</strong></div>
+            <div><strong>${a.brand} ${a.model}</strong></div>
             <div class="badges">
-              ${badge(tyreA.size)} ${badge(tyreA.load_index + tyreA.speed_index)}
-              ${badge('Rok: '+tyreA.year)} ${badge('Bieżnik: '+tyreA.tread_mm+' mm')}
+              ${badge(a.size)} ${badge(a.load_index + a.speed_index)}
+              ${badge('Rok: '+a.year)} ${badge('Bieżnik: '+a.tread_mm+' mm')}
             </div>
-            <div class="price">${fmtPrice(tyreA.price_cents)}</div>
+            <div class="price">${fmtPrice(a.price_cents)}</div>
           </div>
         </div>
         <div class="tire">
           <div class="thumb"></div>
           <div>
-            <div><strong>${tyreB.brand} ${tyreB.model}</strong></div>
+            <div><strong>${b.brand} ${b.model}</strong></div>
             <div class="badges">
-              ${badge(tyreB.size)} ${badge(tyreB.load_index + tyreB.speed_index)}
-              ${badge('Rok: '+tyreB.year)} ${badge('Bieżnik: '+tyreB.tread_mm+' mm')}
+              ${badge(b.size)} ${badge(b.load_index + b.speed_index)}
+              ${badge('Rok: '+b.year)} ${badge('Bieżnik: '+b.tread_mm+' mm')}
             </div>
-            <div class="price">${fmtPrice(tyreB.price_cents)}</div>
+            <div class="price">${fmtPrice(b.price_cents)}</div>
           </div>
         </div>
       </div>

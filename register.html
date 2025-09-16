@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OponaDoPary — Rejestracja</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="./supabaseClient.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span> OponaDoPary</div>
+    <nav class="nav">
+      <a href="./index.html">Wyszukiwarka par</a>
+      <a href="./seller.html">Panel sprzedawcy</a>
+      <a href="./account.html">Moje konto</a>
+      <a href="./register.html" class="active">Rejestracja</a>
+      <button id="btn-login" class="btn small">Zaloguj</button>
+      <button id="btn-logout" class="btn small ghost hidden">Wyloguj</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>Załóż konto</h1>
+      <p class="muted">Sprzedający muszą posiadać konto. Kupujący mogą kupować jako gość, ale z kontem płacą niższą prowizję (3 zł).</p>
+      <form id="reg-form" class="grid">
+        <div class="field">
+          <label>E-mail *</label>
+          <input id="reg-email" type="email" required />
+        </div>
+        <div class="field">
+          <label>Hasło *</label>
+          <input id="reg-pass" type="password" required />
+        </div>
+        <div class="field">
+          <label>Powtórz hasło *</label>
+          <input id="reg-pass2" type="password" required />
+        </div>
+        <div class="field">
+          <label>Rola *</label>
+          <select id="reg-role" required>
+            <option value="seller">Sprzedający</option>
+            <option value="buyer">Kupujący</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Imię i nazwisko</label>
+          <input id="reg-name" type="text" placeholder="Jan Kowalski" />
+        </div>
+        <div class="field">
+          <label>Telefon</label>
+          <input id="reg-phone" type="tel" placeholder="+48 ..." />
+        </div>
+        <div class="field">
+          <label>Adres</label>
+          <input id="reg-addr1" type="text" placeholder="Ulica i nr" />
+        </div>
+        <div class="field">
+          <label>Adres (cd.)</label>
+          <input id="reg-addr2" type="text" placeholder="(opcjonalnie)" />
+        </div>
+        <div class="field">
+          <label>Miasto</label>
+          <input id="reg-city" type="text" />
+        </div>
+        <div class="field">
+          <label>Kod pocztowy</label>
+          <input id="reg-postal" type="text" placeholder="00-000" />
+        </div>
+        <div class="field">
+          <label>IBAN do wypłat (dla COD)</label>
+          <input id="reg-iban" type="text" placeholder="PL..." />
+        </div>
+
+        <div class="field">
+          <label>Opcje sprzedaży</label>
+          <div class="badges">
+            <label><input id="reg-accept-cod" type="checkbox" checked /> Akceptuję pobranie (COD)</label>
+            <label><input id="reg-accept-manual" type="checkbox" checked /> Akceptuję zakup manualny</label>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" type="submit">Zarejestruj</button>
+          <a class="btn ghost" href="./index.html">Anuluj</a>
+        </div>
+      </form>
+
+      <div id="reg-msg" class="empty"></div>
+    </section>
+  </main>
+
+  <script src="./register.js"></script>
+</body>
+</html>

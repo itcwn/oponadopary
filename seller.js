@@ -1,4 +1,4 @@
-// Załadowanie słowników + dodawanie ogłoszeń + listowanie swoich
+// Dodawanie ogłoszeń + listowanie swoich
 const addBrand = document.getElementById('add-brand');
 const addModel = document.getElementById('add-model');
 const addSize  = document.getElementById('add-size');
@@ -96,7 +96,6 @@ addForm.addEventListener('submit', async (e)=>{
   if(!brand_id||!model_id||!size_id||!load_id||!speed_id){ alert('Uzupełnij pola.'); return; }
 
   const photoUrls = await uploadPhotos(files, user.id);
-
   const { error } = await sb.from('tires').insert({
     seller_id: user.id,
     brand_id, model_id, size_id, load_index_id: load_id, speed_index_id: speed_id,
