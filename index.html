@@ -16,81 +16,86 @@
       <a href="./seller.html">Panel sprzedawcy</a>
       <a href="./account.html">Moje konto</a>
       <a href="./register.html">Rejestracja</a>
-      <button id="btn-login" class="btn small">Zaloguj</button>
+      <a href="./faq.html">FAQ</a>
+      <button id="btn-open-login" class="btn small">Zaloguj</button>
       <button id="btn-logout" class="btn small ghost hidden">Wyloguj</button>
     </nav>
   </header>
 
-  <main class="container">
-    <section class="card">
-      <h1>Znajdź drugą oponę do pary</h1>
-      <p class="muted">Marka i model są twardymi warunkami. Rok i bieżnik — w tolerancji.</p>
+  <section class="hero">
+    <img src="./assets/hero.jpg" alt="OponaDoPary hero" />
+    <div class="hero-strip">
+      <img src="./assets/ad_728x90.png" alt="Baner 728x90" />
+    </div>
+  </section>
 
-      <form id="search-form" class="grid">
-        <div class="field">
-          <label>Producent (marka) *</label>
-          <select id="brand-select" required></select>
-        </div>
-        <div class="field">
-          <label>Model *</label>
-          <select id="model-select" required></select>
-        </div>
-        <div class="field">
-          <label>Rozmiar *</label>
-          <select id="size-select" required></select>
-        </div>
-        <div class="field">
-          <label>Indeks nośności *</label>
-          <select id="load-select" required></select>
-        </div>
-        <div class="field">
-          <label>Indeks prędkości *</label>
-          <select id="speed-select" required></select>
-        </div>
-        <div class="field">
-          <label>Rok produkcji</label>
-          <input id="year-input" type="number" min="2000" step="1" placeholder="2019" />
-        </div>
-        <div class="field">
-          <label>Bieżnik (mm)</label>
-          <input id="tread-input" type="number" min="0" max="20" step="0.5" placeholder="6.5" />
-        </div>
-        <div class="field">
-          <label>Tolerancja roku (≤)</label>
-          <input id="tol-year" type="number" min="0" max="5" step="1" value="2" />
-        </div>
-        <div class="field">
-          <label>Tolerancja bieżnika (≤)</label>
-          <input id="tol-tread" type="number" min="0" max="3" step="0.5" value="1.5" />
-        </div>
-        <div class="actions">
-          <button type="submit" class="btn">Szukaj par</button>
-          <button type="button" id="btn-clear" class="btn ghost">Wyczyść</button>
+  <!-- Modal logowania -->
+  <div id="login-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <h3>Zaloguj się</h3>
+      <form id="login-form" class="form-vertical">
+        <label>E-mail
+          <input id="login-email" type="email" required />
+        </label>
+        <label>Hasło
+          <input id="login-pass" type="password" required />
+        </label>
+        <div class="row-between">
+          <button type="submit" class="btn">Zaloguj</button>
+          <button type="button" id="btn-close-login" class="btn ghost">Anuluj</button>
         </div>
       </form>
-    </section>
+      <div class="muted small">Nie masz konta? <a href="./register.html">Zarejestruj się</a></div>
+    </div>
+  </div>
 
-    <section class="card" id="results-card">
-      <div class="row-between">
-        <div>
-          <strong id="results-count">Znaleziono 0 par</strong>
-          <div class="muted" id="results-criteria"></div>
+  <main class="container with-sidebar">
+    <section class="content">
+      <section class="card">
+        <h1>Znajdź drugą oponę do pary</h1>
+        <p class="muted">Wymagany jest tylko rozmiar. Pozostałe filtry są opcjonalne.</p>
+        <form id="search-form" class="grid">
+          <div class="field"><label>Rozmiar *</label><select id="size-select" required></select></div>
+          <div class="field"><label>Producent (opc.)</label><select id="brand-select"></select></div>
+          <div class="field"><label>Model (opc.)</label><select id="model-select"></select></div>
+          <div class="field"><label>Indeks nośności (opc.)</label><select id="load-select"></select></div>
+          <div class="field"><label>Indeks prędkości (opc.)</label><select id="speed-select"></select></div>
+          <div class="field"><label>Rok (opc.)</label><input id="year-input" type="number" min="2000" step="1" placeholder="2019" /></div>
+          <div class="field"><label>Bieżnik (mm) (opc.)</label><input id="tread-input" type="number" min="0" max="20" step="0.5" placeholder="6.5" /></div>
+          <div class="field"><label>Tolerancja roku (≤)</label><input id="tol-year" type="number" min="0" max="5" step="1" value="2" /></div>
+          <div class="field"><label>Tolerancja bieżnika (≤)</label><input id="tol-tread" type="number" min="0" max="3" step="0.5" value="1.5" /></div>
+          <div class="actions"><button type="submit" class="btn">Szukaj par</button><button type="button" id="btn-clear" class="btn ghost">Wyczyść</button></div>
+        </form>
+      </section>
+
+      <section class="card" id="results-card">
+        <div class="row-between">
+          <div><strong id="results-count">Znaleziono 0 par</strong><div class="muted" id="results-criteria"></div></div>
+          <div><label class="muted">Sortowanie:</label>
+            <select id="sort-select">
+              <option value="best">Najlepsze dopasowanie</option>
+              <option value="price">Najniższa cena</option>
+              <option value="newest">Najnowsze</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label class="muted">Sortowanie:</label>
-          <select id="sort-select">
-            <option value="best">Najlepsze dopasowanie</option>
-            <option value="price">Najniższa cena</option>
-            <option value="newest">Najnowsze</option>
-          </select>
-        </div>
-      </div>
-      <div id="results" class="pairs"></div>
-      <div id="empty" class="empty hidden">
-        Brak dopasowanych par. Spróbuj zwiększyć tolerancję roku lub bieżnika.
-      </div>
+        <div id="results" class="pairs"></div>
+        <div id="empty" class="empty hidden">Brak dopasowanych par. Spróbuj zwiększyć tolerancję roku lub bieżnika.</div>
+      </section>
     </section>
+    <aside class="sidebar">
+      <div class="ad-slot"><img src="./assets/ad_300x250.png" alt="Reklama 300x250" /></div>
+      <div class="ad-slot tall"><img src="./assets/ad_160x600.png" alt="Reklama 160x600" /></div>
+    </aside>
   </main>
+
+  <footer class="footer">
+    <div class="container row-between">
+      <div class="muted">© OponaDoPary • Zwiększamy szanse sprzedaży pojedynczej opony.</div>
+      <div class="ad-inline"><img src="./assets/ad_728x90.png" alt="Reklama 728x90" /></div>
+    </div>
+  </footer>
 
   <script src="./search.js"></script>
   <script src="./auth.js"></script>
