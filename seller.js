@@ -73,7 +73,7 @@ async function uploadPhotos(files, userId){
     const f = files[i];
     const resized = await resizeImage(f, 800);
     const path = `${userId}/${Date.now()}_${i}.jpg`;
-    const { data, error } = await sb.storage.from(bucket).upload(path, resized, { contentType: 'image/jpeg', upsert: false });
+    const { error } = await sb.storage.from(bucket).upload(path, resized, { contentType: 'image/jpeg', upsert: false });
     if(error){ console.error(error); continue; }
     const { data: pub } = sb.storage.from(bucket).getPublicUrl(path);
     uploaded.push(pub.publicUrl);
@@ -92,6 +92,8 @@ addForm.addEventListener('submit', async (e)=>{
   const year     = Number(document.getElementById('add-year').value);
   const tread    = Number(document.getElementById('add-tread').value);
   const price_pln= Number(document.getElementById('add-price').value);
+  const desc     = document.getElementById('add-desc').value;
+  const invoice  = document.getElementById('add-invoice').checked;
   const files    = document.getElementById('add-photos').files;
   if(!brand_id||!model_id||!size_id||!load_id||!speed_id){ alert('Uzupełnij pola.'); return; }
 
@@ -100,7 +102,7 @@ addForm.addEventListener('submit', async (e)=>{
     seller_id: user.id,
     brand_id, model_id, size_id, load_index_id: load_id, speed_index_id: speed_id,
     year, tread_mm: tread, condition: 'used', price_cents: Math.round(price_pln*100),
-    photos: photoUrls
+    description: desc, invoice: invoice, photos: photoUrls
   });
   if (error){ alert(error.message); return; }
   alert('Dodano ogłoszenie!');
@@ -122,7 +124,7 @@ async function loadMyListings(){
       <div class="tire">
         <div class="thumb" style="background-image:url('${(t.photos&&t.photos[0])||''}'); background-size:cover"></div>
         <div>
-          <div><strong>${t.brand} ${t.model}</strong></div>
+          <div><strong>${t.brand} ${t.model}</strong> ${t.invoice ? ' • <span class="badge">FV</span>' : ''}</div>
           <div class="badges">
             <span class="badge">${t.size}</span>
             <span class="badge">${t.load_index}${t.speed_index}</span>
@@ -130,6 +132,7 @@ async function loadMyListings(){
             <span class="badge">Bieżnik: ${t.tread_mm} mm</span>
           </div>
           <div class="price">${(t.price_cents/100).toFixed(2)} PLN</div>
+          ${t.description ? `<div class="muted">${t.description}</div>` : ''}
           <div class="badges"><span class="badge">${t.status}</span></div>
         </div>
       </div>`;
