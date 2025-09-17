@@ -1,7 +1,6 @@
-// Rejestracja konta (Auth + profil)
+// Rejestracja konta (Auth + profil) — zapis profilu po signUp jeśli mamy userId
 const form = document.getElementById('reg-form');
 const msg = document.getElementById('reg-msg');
-
 function showMsg(text){ msg.textContent = text; }
 
 form.addEventListener('submit', async (e) => {
@@ -30,15 +29,13 @@ form.addEventListener('submit', async (e) => {
     const u = await sb.auth.getUser();
     userId = u?.data?.user?.id ?? null;
   }
-
   if (userId) {
-    const { error: e2 } = await sb.from('profiles').insert({
+    await sb.from('profiles').upsert({
       user_id: userId, role, full_name, phone, address_line1, address_line2,
       city, postal_code, iban, accept_cod, accept_manual
-    });
-    if (e2) console.warn('Profil nie zapisany teraz:', e2.message);
-    showMsg('Konto utworzone! Możesz przejść do logowania lub panelu sprzedawcy.');
+    }, { onConflict: 'user_id' });
+    showMsg('Konto utworzone! Możesz się zalogować.');
   } else {
-    showMsg('Konto utworzone! Sprawdź e-mail i potwierdź rejestrację. Po zalogowaniu uzupełnisz profil.');
+    showMsg('Konto utworzone! Sprawdź e-mail i potwierdź rejestrację. Profil utworzy się przy pierwszym logowaniu.');
   }
 });
