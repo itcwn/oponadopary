@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>OponaDoPary — FAQ</title><link rel="stylesheet" href="./styles.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script><script src="./supabaseClient.js"></script></head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span> OponaDoPary</div>
+    <nav class="nav">
+      <a href="./index.html">Wyszukiwarka par</a>
+      <a href="./seller.html">Panel sprzedawcy</a>
+      <a href="./account.html">Moje konto</a>
+      <a href="./register.html">Rejestracja</a>
+      <a href="./faq.html" class="active">FAQ</a>
+      <button id="btn-open-login" class="btn small">Zaloguj</button>
+      <button id="btn-logout" class="btn small ghost hidden">Wyloguj</button>
+    </nav>
+  </header>
+  <section class="hero"><img src="./assets/hero.jpg" alt=""/><div class="hero-strip"><img src="./assets/ad_728x90.png" alt=""/></div></section>
+  <main class="container with-sidebar">
+    <section class="content">
+      <section class="card"><h1>FAQ — Najczęstsze pytania</h1>
+        <details open><summary>Co to jest „zakup manualny”?</summary><p>To darmowa opcja kontaktu sprzedającego z kupującym poza portalem (np. telefon/BLIK). Portal nie generuje etykiet ani nie pobiera opłat.</p></details>
+        <details><summary>Jak działa pobranie (COD)?</summary><p>Kupujący opłaca w portalu tylko prowizję i koszt wysyłki. Cenę opony płaci kurierowi przy odbiorze. Po doręczeniu środki trafiają na konto sprzedającego.</p></details>
+        <details><summary>Jak parujemy opony?</summary><p>Minimalny warunek to rozmiar. Opcjonalnie możesz doprecyzować producenta, model, indeksy oraz tolerancje roku/bieżnika.</p></details>
+        <details><summary>Czy mogę wystawić fakturę VAT?</summary><p>Tak — w formularzu ogłoszenia zaznacz „Wystawiam FV”.</p></details>
+      </section>
+    </section>
+    <aside class="sidebar"><div class="ad-slot"><img src="./assets/ad_300x250.png" alt=""/></div><div class="ad-slot tall"><img src="./assets/ad_160x600.png" alt=""/></div></aside>
+  </main>
+  <footer class="footer"><div class="container row-between"><div class="muted">© OponaDoPary</div><div class="ad-inline"><img src="./assets/ad_728x90.png" alt=""/></div></div></footer>
+  <script src="./auth.js"></script>
+</body></html>
