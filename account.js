@@ -1,4 +1,4 @@
-// Moje konto — edycja profilu (bez zmiany loginu/hasła)
+// Moje konto — edycja profilu
 const form = document.getElementById('acct-form');
 const msg = document.getElementById('acct-msg');
 const btnReset = document.getElementById('btn-reset');
@@ -69,8 +69,8 @@ form.addEventListener('submit', async (e)=>{
   e.preventDefault();
   const user = await ensureAuth(); if(!user) return;
   const model = getFormData();
-  if(!validPostal(model.postal_code)){ alert('Nieprawidłowy kod pocztowy (format 00-000).'); return; }
-  if(!validIban(model.iban)){ alert('Nieprawidłowy IBAN — powinien zaczynać się od PL i mieć 28 znaków.'); return; }
+  if(!validPostal(model.postal_code)){ alert('Nieprawidłowy kod pocztowy (00-000).'); return; }
+  if(!validIban(model.iban)){ alert('Nieprawidłowy IBAN — PL i 28 znaków.'); return; }
   const payload = { ...model, user_id: user.id };
   const { error } = await sb.from('profiles').upsert(payload, { onConflict: 'user_id' });
   if(error){ alert(error.message); return; }
