@@ -1,7 +1,7 @@
-// Zależne selecty + wyszukiwanie par
+// Wyszukiwarka — wymagany tylko rozmiar; deduplikacja par w SQL (id2 > id1)
+const sizeSel  = document.getElementById('size-select');
 const brandSel = document.getElementById('brand-select');
 const modelSel = document.getElementById('model-select');
-const sizeSel  = document.getElementById('size-select');
 const loadSel  = document.getElementById('load-select');
 const speedSel = document.getElementById('speed-select');
 
@@ -14,69 +14,50 @@ const resultsEl = document.getElementById('results');
 const emptyEl = document.getElementById('empty');
 const resCountEl = document.getElementById('results-count');
 const resCritEl = document.getElementById('results-criteria');
-const sortSel = document.getElementById('sort-select');
 
 const form = document.getElementById('search-form');
 const btnClear = document.getElementById('btn-clear');
 
 function option(value, label){ const o=document.createElement('option'); o.value=value; o.textContent=label; return o; }
 
+async function loadSizes() {
+  const { data } = await sb.from('sizes').select('id,display').order('width,aspect,rim');
+  sizeSel.innerHTML = ''; sizeSel.appendChild(option('', 'Wybierz...'));
+  (data||[]).forEach(s => sizeSel.appendChild(option(s.id, s.display)));
+}
 async function loadBrands() {
-  const { data, error } = await sb.from('brands').select('id,name').order('name');
-  if (error) { console.error(error); return; }
-  brandSel.innerHTML = ''; brandSel.appendChild(option('', 'Wybierz...'));
-  data.forEach(b => brandSel.appendChild(option(b.id, b.name)));
-  modelSel.innerHTML = ''; sizeSel.innerHTML = ''; loadSel.innerHTML = ''; speedSel.innerHTML = '';
+  const { data } = await sb.from('brands').select('id,name').order('name');
+  brandSel.innerHTML=''; brandSel.appendChild(option('', 'Dowolny'));
+  (data||[]).forEach(b=>brandSel.appendChild(option(b.id,b.name)));
 }
-
 async function loadModels(brandId) {
-  modelSel.innerHTML=''; modelSel.appendChild(option('', 'Wybierz...'));
+  modelSel.innerHTML=''; modelSel.appendChild(option('', 'Dowolny'));
   if (!brandId) return;
-  const { data, error } = await sb.from('models').select('id,name').eq('brand_id', brandId).order('name');
-  if (error) { console.error(error); return; }
-  data.forEach(m => modelSel.appendChild(option(m.id, m.name)));
-  sizeSel.innerHTML = ''; loadSel.innerHTML = ''; speedSel.innerHTML = '';
+  const { data } = await sb.from('models').select('id,name').eq('brand_id', brandId).order('name');
+  (data||[]).forEach(m=>modelSel.appendChild(option(m.id,m.name)));
 }
-
-async function loadSizes(modelId) {
-  sizeSel.innerHTML=''; sizeSel.appendChild(option('', 'Wybierz...'));
-  if (!modelId) return;
-  const { data, error } = await sb.rpc('get_sizes_for_model', { p_model_id: Number(modelId) });
-  if (error) { console.error(error); return; }
-  data.forEach(s => sizeSel.appendChild(option(s.id, s.display)));
-  loadSel.innerHTML = ''; speedSel.innerHTML = '';
+async function loadIndexLists() {
+  const { data: loads } = await sb.from('load_indices').select('id,value').order('value');
+  const { data: speeds } = await sb.from('speed_indices').select('id,code').order('code');
+  loadSel.innerHTML=''; loadSel.appendChild(option('', 'Dowolny'));
+  (loads||[]).forEach(li=>loadSel.appendChild(option(li.id, li.value)));
+  speedSel.innerHTML=''; speedSel.appendChild(option('', 'Dowolny'));
+  (speeds||[]).forEach(si=>speedSel.appendChild(option(si.id, si.code)));
 }
-
-async function loadIndices(modelId, sizeId) {
-  loadSel.innerHTML=''; speedSel.innerHTML='';
-  if (!modelId || !sizeId) return;
-  const { data: loads, error: e1 } = await sb.rpc('get_load_indices_for_model_size', { p_model_id: Number(modelId), p_size_id: Number(sizeId) });
-  const { data: speeds, error: e2 } = await sb.rpc('get_speed_indices_for_model_size', { p_model_id: Number(modelId), p_size_id: Number(sizeId) });
-  if (e1 || e2) { console.error(e1||e2); return; }
-  loadSel.appendChild(option('', 'Wybierz...'));
-  speedSel.appendChild(option('', 'Wybierz...'));
-  loads.forEach(li => loadSel.appendChild(option(li.id, li.value)));
-  speeds.forEach(si => speedSel.appendChild(option(si.id, si.code)));
-}
-
 brandSel.addEventListener('change', e => loadModels(e.target.value));
-modelSel.addEventListener('change', e => loadSizes(e.target.value));
-sizeSel.addEventListener('change', e => loadIndices(modelSel.value, e.target.value));
 
 async function searchPairs(e){
   e.preventDefault();
-  const brand_id = Number(brandSel.value);
-  const model_id = Number(modelSel.value);
   const size_id  = Number(sizeSel.value);
-  const load_id  = Number(loadSel.value);
-  const speed_id = Number(speedSel.value);
-  if(!brand_id||!model_id||!size_id||!load_id||!speed_id){
-    alert('Uzupełnij wszystkie obowiązkowe pola.'); return;
-  }
-  const year = yearInput.value? Number(yearInput.value): null;
-  const tread = treadInput.value? Number(treadInput.value): null;
-  const tol_year = Number(tolYear.value||0);
-  const tol_tread = Number(tolTread.value||0);
+  if(!size_id){ alert('Wybierz rozmiar.'); return; }
+  const brand_id = brandSel.value? Number(brandSel.value) : null;
+  const model_id = modelSel.value? Number(modelSel.value) : null;
+  const load_id  = loadSel.value? Number(loadSel.value) : null;
+  const speed_id = speedSel.value? Number(speedSel.value) : null;
+  const year     = yearInput.value? Number(yearInput.value): null;
+  const tread    = treadInput.value? Number(treadInput.value): null;
+  const tol_year   = Number(tolYear.value||0);
+  const tol_tread  = Number(tolTread.value||0);
 
   const { data, error } = await sb.rpc('search_pairs', {
     p_brand_id: brand_id,
@@ -91,7 +72,7 @@ async function searchPairs(e){
   });
   if (error){ console.error(error); alert('Błąd wyszukiwania'); return; }
 
-  renderResults(data||[], {brand_id, model_id, size_id, load_id, speed_id, year, tread, tol_year, tol_tread});
+  renderResults(data||[], { tol_year, tol_tread });
 }
 
 function fmtPrice(cents){ return new Intl.NumberFormat('pl-PL',{style:'currency',currency:'PLN'}).format((cents||0)/100); }
@@ -101,7 +82,6 @@ function renderResults(items, crit){
   resultsEl.innerHTML='';
   resCountEl.textContent = `Znaleziono ${items.length} par`;
   resCritEl.textContent = 'Filtry zastosowane.';
-
   if(!items.length){ emptyEl.classList.remove('hidden'); return; }
   emptyEl.classList.add('hidden');
 
@@ -109,15 +89,15 @@ function renderResults(items, crit){
     const a = p.tire_1, b = p.tire_2;
     const diffYear = Math.abs((a.year||0)-(b.year||0));
     const diffTread = Math.abs((a.tread_mm||0)-(b.tread_mm||0));
-    const clsYear = diffYear <= (crit.tol_year||0) ? 'ok':'warn';
-    const clsTread = diffTread <= (crit.tol_tread||0) ? 'ok':'warn';
+    const clsYear = diffYear <= (+crit.tol_year||0) ? 'ok':'warn';
+    const clsTread = diffTread <= (+crit.tol_tread||0) ? 'ok':'warn';
     const html = `
     <div class="pair">
       <div class="row">
         <div class="tire">
           <div class="thumb"></div>
           <div>
-            <div><strong>${a.brand} ${a.model}</strong></div>
+            <div><strong>${a.brand} ${a.model}</strong> ${a.invoice ? ' • <span class="badge">FV</span>' : ''}</div>
             <div class="badges">
               ${badge(a.size)} ${badge(a.load_index + a.speed_index)}
               ${badge('Rok: '+a.year)} ${badge('Bieżnik: '+a.tread_mm+' mm')}
@@ -128,7 +108,7 @@ function renderResults(items, crit){
         <div class="tire">
           <div class="thumb"></div>
           <div>
-            <div><strong>${b.brand} ${b.model}</strong></div>
+            <div><strong>${b.brand} ${b.model}</strong> ${b.invoice ? ' • <span class="badge">FV</span>' : ''}</div>
             <div class="badges">
               ${badge(b.size)} ${badge(b.load_index + b.speed_index)}
               ${badge('Rok: '+b.year)} ${badge('Bieżnik: '+b.tread_mm+' mm')}
@@ -151,4 +131,4 @@ function renderResults(items, crit){
 form.addEventListener('submit', searchPairs);
 btnClear.addEventListener('click', () => { form.reset(); });
 
-loadBrands();
+loadSizes(); loadBrands(); loadModels(null); loadIndexLists();
