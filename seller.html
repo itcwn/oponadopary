@@ -1,13 +1,8 @@
 <!doctype html>
-<html lang="pl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OponaDoPary — Panel sprzedawcy</title>
-  <link rel="stylesheet" href="./styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-  <script src="./supabaseClient.js"></script>
-</head>
+<html lang="pl"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>OponaDoPary — Panel sprzedawcy</title><link rel="stylesheet" href="./styles.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="./supabaseClient.js"></script></head>
 <body>
   <header class="topbar">
     <div class="brand"><span class="dot"></span> OponaDoPary</div>
@@ -16,65 +11,36 @@
       <a href="./seller.html" class="active">Panel sprzedawcy</a>
       <a href="./account.html">Moje konto</a>
       <a href="./register.html">Rejestracja</a>
-      <button id="btn-login" class="btn small">Zaloguj</button>
+      <a href="./faq.html">FAQ</a>
+      <button id="btn-open-login" class="btn small">Zaloguj</button>
       <button id="btn-logout" class="btn small ghost hidden">Wyloguj</button>
     </nav>
   </header>
-
-  <main class="container">
-    <section class="card">
-      <h1>Dodaj ogłoszenie o oponie</h1>
-      <p class="muted">Maksymalnie 5 zdjęć. Zostaną przeskalowane do szerokości 800px po stronie przeglądarki.</p>
-      <form id="add-form" class="grid">
-        <div class="field">
-          <label>Producent *</label>
-          <select id="add-brand" required></select>
-        </div>
-        <div class="field">
-          <label>Model *</label>
-          <select id="add-model" required></select>
-        </div>
-        <div class="field">
-          <label>Rozmiar *</label>
-          <select id="add-size" required></select>
-        </div>
-        <div class="field">
-          <label>Indeks nośności *</label>
-          <select id="add-load" required></select>
-        </div>
-        <div class="field">
-          <label>Indeks prędkości *</label>
-          <select id="add-speed" required></select>
-        </div>
-        <div class="field">
-          <label>Rok produkcji *</label>
-          <input id="add-year" type="number" min="2000" step="1" required />
-        </div>
-        <div class="field">
-          <label>Bieżnik (mm) *</label>
-          <input id="add-tread" type="number" min="0" max="20" step="0.5" required />
-        </div>
-        <div class="field">
-          <label>Cena (PLN) *</label>
-          <input id="add-price" type="number" min="0" step="1" required />
-        </div>
-        <div class="field span-2">
-          <label>Zdjęcia (max 5)</label>
-          <input id="add-photos" type="file" accept="image/*" multiple />
-        </div>
-        <div class="actions">
-          <button type="submit" class="btn">Dodaj ogłoszenie</button>
-        </div>
-      </form>
+  <section class="hero"><img src="./assets/hero.jpg" alt=""/><div class="hero-strip"><img src="./assets/ad_728x90.png" alt=""/></div></section>
+  <main class="container with-sidebar">
+    <section class="content">
+      <section class="card">
+        <h1>Dodaj ogłoszenie o oponie</h1>
+        <p class="muted">Maksymalnie 5 zdjęć. Zostaną przeskalowane do 800px szerokości.</p>
+        <form id="add-form" class="grid">
+          <div class="field"><label>Producent *</label><select id="add-brand" required></select></div>
+          <div class="field"><label>Model *</label><select id="add-model" required></select></div>
+          <div class="field"><label>Rozmiar *</label><select id="add-size" required></select></div>
+          <div class="field"><label>Indeks nośności *</label><select id="add-load" required></select></div>
+          <div class="field"><label>Indeks prędkości *</label><select id="add-speed" required></select></div>
+          <div class="field"><label>Rok produkcji *</label><input id="add-year" type="number" min="2000" step="1" required/></div>
+          <div class="field"><label>Bieżnik (mm) *</label><input id="add-tread" type="number" min="0" max="20" step="0.5" required/></div>
+          <div class="field"><label>Cena (PLN) *</label><input id="add-price" type="number" min="0" step="1" required/></div>
+          <div class="field span-2"><label>Opis (opcjonalnie)</label><textarea id="add-desc" rows="3" maxlength="1000" placeholder="Stan, historia, uwagi..."></textarea></div>
+          <div class="field"><label class="checkbox"><input id="add-invoice" type="checkbox"/><span>Wystawiam FV</span></label></div>
+          <div class="field span-2"><label>Zdjęcia (max 5)</label><input id="add-photos" type="file" accept="image/*" multiple/></div>
+          <div class="actions"><button type="submit" class="btn">Dodaj ogłoszenie</button></div>
+        </form>
+      </section>
+      <section class="card"><h2>Moje ogłoszenia</h2><div id="my-listings" class="listings"></div></section>
     </section>
-
-    <section class="card">
-      <h2>Moje ogłoszenia</h2>
-      <div id="my-listings" class="listings"></div>
-    </section>
+    <aside class="sidebar"><div class="ad-slot"><img src="./assets/ad_300x250.png" alt=""/></div><div class="ad-slot tall"><img src="./assets/ad_160x600.png" alt=""/></div></aside>
   </main>
-
-  <script src="./seller.js"></script>
-  <script src="./auth.js"></script>
-</body>
-</html>
+  <footer class="footer"><div class="container row-between"><div class="muted">© OponaDoPary</div><div class="ad-inline"><img src="./assets/ad_728x90.png" alt=""/></div></div></footer>
+  <script src="./seller.js"></script><script src="./auth.js"></script>
+</body></html>
