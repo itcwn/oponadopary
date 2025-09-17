@@ -1,13 +1,7 @@
 <!doctype html>
-<html lang="pl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OponaDoPary — Moje konto</title>
-  <link rel="stylesheet" href="./styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-  <script src="./supabaseClient.js"></script>
-</head>
+<html lang="pl"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>OponaDoPary — Moje konto</title><link rel="stylesheet" href="./styles.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script><script src="./supabaseClient.js"></script></head>
 <body>
   <header class="topbar">
     <div class="brand"><span class="dot"></span> OponaDoPary</div>
@@ -16,68 +10,37 @@
       <a href="./seller.html">Panel sprzedawcy</a>
       <a href="./account.html" class="active">Moje konto</a>
       <a href="./register.html">Rejestracja</a>
-      <button id="btn-login" class="btn small">Zaloguj</button>
+      <a href="./faq.html">FAQ</a>
+      <button id="btn-open-login" class="btn small">Zaloguj</button>
       <button id="btn-logout" class="btn small ghost hidden">Wyloguj</button>
     </nav>
   </header>
-
-  <main class="container">
-    <section class="card">
-      <h1>Moje konto</h1>
-      <p class="muted">Edytuj dane adresowe i numer konta. (Login/hasło zmieniasz osobno przez reset hasła.)</p>
-      <form id="acct-form" class="grid">
-        <div class="field">
-          <label>Rola</label>
-          <select id="role">
-            <option value="seller">Sprzedający</option>
-            <option value="buyer">Kupujący</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Imię i nazwisko</label>
-          <input id="full_name" type="text" placeholder="Jan Kowalski" />
-        </div>
-        <div class="field">
-          <label>Telefon</label>
-          <input id="phone" type="tel" placeholder="+48 ..." />
-        </div>
-        <div class="field">
-          <label>Adres</label>
-          <input id="address_line1" type="text" placeholder="Ulica i nr" />
-        </div>
-        <div class="field">
-          <label>Adres (cd.)</label>
-          <input id="address_line2" type="text" placeholder="(opcjonalnie)" />
-        </div>
-        <div class="field">
-          <label>Miasto</label>
-          <input id="city" type="text" />
-        </div>
-        <div class="field">
-          <label>Kod pocztowy</label>
-          <input id="postal_code" type="text" placeholder="00-000" />
-        </div>
-        <div class="field">
-          <label>IBAN (dla wypłat COD)</label>
-          <input id="iban" type="text" placeholder="PL..." />
-        </div>
-        <div class="field">
-          <label>Opcje sprzedaży</label>
-          <div class="badges">
-            <label><input id="accept_cod" type="checkbox" /> Akceptuję pobranie (COD)</label>
-            <label><input id="accept_manual" type="checkbox" /> Akceptuję zakup manualny</label>
+  <section class="hero"><img src="./assets/hero.jpg" alt=""/><div class="hero-strip"><img src="./assets/ad_728x90.png" alt=""/></div></section>
+  <main class="container with-sidebar">
+    <section class="content">
+      <section class="card">
+        <h1>Moje konto</h1>
+        <p class="muted">Edytuj dane adresowe i IBAN. Login/hasło zmieniasz przez reset hasła.</p>
+        <form id="acct-form" class="grid">
+          <div class="field"><label>Rola</label><select id="role"><option value="seller">Sprzedający</option><option value="buyer">Kupujący</option></select></div>
+          <div class="field"><label>Imię i nazwisko</label><input id="full_name" type="text"/></div>
+          <div class="field"><label>Telefon</label><input id="phone" type="tel"/></div>
+          <div class="field"><label>Adres</label><input id="address_line1" type="text"/></div>
+          <div class="field"><label>Adres (cd.)</label><input id="address_line2" type="text"/></div>
+          <div class="field"><label>Miasto</label><input id="city" type="text"/></div>
+          <div class="field"><label>Kod pocztowy</label><input id="postal_code" type="text" placeholder="00-000"/></div>
+          <div class="field"><label>IBAN</label><input id="iban" type="text" placeholder="PL..."/></div>
+          <div class="field span-2"><label>Opcje sprzedaży</label>
+            <label class="checkbox"><input id="accept_cod" type="checkbox"/><span>Akceptuję pobranie (COD)</span></label>
+            <label class="checkbox"><input id="accept_manual" type="checkbox"/><span>Akceptuję zakup manualny</span></label>
           </div>
-        </div>
-        <div class="actions">
-          <button class="btn" type="submit">Zapisz</button>
-          <button class="btn ghost" type="button" id="btn-reset">Reset</button>
-        </div>
-      </form>
-      <div id="acct-msg" class="empty"></div>
+          <div class="actions"><button class="btn" type="submit">Zapisz</button><button class="btn ghost" type="button" id="btn-reset">Reset</button></div>
+        </form>
+        <div id="acct-msg" class="empty"></div>
+      </section>
     </section>
+    <aside class="sidebar"><div class="ad-slot"><img src="./assets/ad_300x250.png" alt=""/></div><div class="ad-slot tall"><img src="./assets/ad_160x600.png" alt=""/></div></aside>
   </main>
-
-  <script src="./auth.js"></script>
-  <script src="./account.js"></script>
-</body>
-</html>
+  <footer class="footer"><div class="container row-between"><div class="muted">© OponaDoPary</div><div class="ad-inline"><img src="./assets/ad_728x90.png" alt=""/></div></div></footer>
+  <script src="./auth.js"></script><script src="./account.js"></script>
+</body></html>
